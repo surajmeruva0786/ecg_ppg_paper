@@ -1,0 +1,152 @@
+# Configuration file for Heart Attack Prediction Pipeline
+
+# Data paths
+data:
+  ecg_path: "ecg.csv"
+  ppg_path: "PPG_Dataset.csv"
+  processed_dir: "data/processed"
+  features_dir: "data/features"
+
+# Random seed for reproducibility
+random_seed: 42
+
+# Data splitting
+split:
+  train_size: 0.70
+  val_size: 0.15
+  test_size: 0.15
+  stratify: true
+
+# Preprocessing
+preprocessing:
+  normalization: "standard"  # Options: standard, minmax, robust
+  handle_outliers: true
+  outlier_method: "iqr"  # Options: iqr, isolation_forest
+  handle_missing: true
+  missing_method: "mean"  # Options: mean, median, forward_fill, interpolate
+  
+# Signal processing
+signal_processing:
+  apply_filtering: true
+  filter_type: "butterworth"  # Options: butterworth, savgol
+  lowcut: 0.5
+  highcut: 50.0
+  order: 4
+  
+# Class imbalance handling
+imbalance:
+  method: "smote"  # Options: smote, adasyn, class_weights, none
+  sampling_strategy: "auto"
+
+# Feature extraction
+features:
+  time_domain: true
+  frequency_domain: true
+  wavelet: true
+  hrv: true
+  
+# Traditional ML models
+ml_models:
+  logistic_regression:
+    enabled: true
+    C: [0.01, 0.1, 1.0, 10.0]
+    penalty: ['l1', 'l2', 'elasticnet']
+    solver: 'saga'
+    max_iter: 1000
+    
+  decision_tree:
+    enabled: true
+    max_depth: [3, 5, 10, 15, 20]
+    min_samples_split: [2, 5, 10]
+    
+  random_forest:
+    enabled: true
+    n_estimators: [50, 100, 200]
+    max_depth: [10, 20, 30]
+    min_samples_split: [2, 5]
+    
+  svm:
+    enabled: true
+    C: [0.1, 1.0, 10.0]
+    kernel: ['linear', 'rbf', 'poly']
+    gamma: ['scale', 'auto']
+    
+  knn:
+    enabled: true
+    n_neighbors: [3, 5, 7, 9, 11]
+    weights: ['uniform', 'distance']
+    
+  xgboost:
+    enabled: true
+    n_estimators: [100, 200]
+    max_depth: [3, 5, 7]
+    learning_rate: [0.01, 0.1, 0.3]
+    
+  lightgbm:
+    enabled: true
+    n_estimators: [100, 200]
+    max_depth: [3, 5, 7]
+    learning_rate: [0.01, 0.1, 0.3]
+    
+  catboost:
+    enabled: true
+    iterations: [100, 200]
+    depth: [3, 5, 7]
+    learning_rate: [0.01, 0.1, 0.3]
+
+# Deep learning models
+dl_models:
+  mlp:
+    enabled: true
+    hidden_layers: [128, 64, 32]
+    dropout: 0.3
+    batch_size: 32
+    epochs: 100
+    learning_rate: 0.001
+    
+  cnn_1d:
+    enabled: true
+    filters: [64, 128, 256]
+    kernel_size: 3
+    pool_size: 2
+    dropout: 0.3
+    batch_size: 32
+    epochs: 100
+    learning_rate: 0.001
+    
+  lstm:
+    enabled: true
+    units: [128, 64]
+    dropout: 0.3
+    batch_size: 32
+    epochs: 100
+    learning_rate: 0.001
+    
+  gru:
+    enabled: true
+    units: [128, 64]
+    dropout: 0.3
+    batch_size: 32
+    epochs: 100
+    learning_rate: 0.001
+    
+  cnn_lstm:
+    enabled: true
+    cnn_filters: [64, 128]
+    lstm_units: [64, 32]
+    dropout: 0.3
+    batch_size: 32
+    epochs: 100
+    learning_rate: 0.001
+
+# Evaluation
+evaluation:
+  cv_folds: 5
+  metrics: ['accuracy', 'precision', 'recall', 'f1', 'roc_auc', 'pr_auc']
+  
+# Visualization
+visualization:
+  figure_size: [12, 8]
+  dpi: 300
+  style: 'seaborn-v0_8-darkgrid'
+  save_format: 'png'
